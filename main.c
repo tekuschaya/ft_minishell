@@ -48,6 +48,25 @@ int ft_strlen(char *s)
 	return (i);
 }
 
+int ft_strcmp(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	if (s1 && s2)
+	{
+		while (s1[i])
+		{
+			if (s1[i] != s2[i])
+				return (0);
+			i++;
+		}
+	}
+	if (s1[i] != s2[i])
+		return (0);
+	return (1);
+}
+
 int lsh_num_builtins()
 {
 	return sizeof(builtin_str) / sizeof(char *);
@@ -85,9 +104,14 @@ int lsh_help(char **args)
 
 int lsh_echo(char **args)
 {
-	//printf ("args = %s \n", args[1]);
-	write(1, args[1], ft_strlen(args[1]));
-	write(1, "\n", 1);
+	//printf ("args = |%s| \n", args[1]);
+	if (ft_strcmp(args[1], "-n"))
+		write(1, args[2], ft_strlen(args[2]));
+	else
+	{
+		write(1, args[1], ft_strlen(args[1]));
+		write(1, "\n", 1);
+	}
 	return 1;
 }
 
@@ -213,7 +237,7 @@ void lsh_loop(char **envp)
 
 	while (status)
 	{
-		printf("> ");
+		//printf("> ");
 		line = lsh_read_line();
 		args = lsh_split_line(line);
 		//printf("line = %s\n", line);
